@@ -1,6 +1,9 @@
 from api.utils.errors import DatabaseProcessError, ValidationError
 from datetime import datetime
 import rethinkdb as rdb
+from jose import jwt
+from jose.exceptions import JWTError
+from passlib.hash import pbkdf2_sha256
 
 r = rdb.RethinkDB()
 connection = r.connect(db='biruda')
@@ -53,8 +56,8 @@ class User(RethinkDBModel):
         lastname = kwargs.get('lastname')
         email = kwargs.get('email')
         password = kwargs.get('password')
-        confirmation_password = kwargs('confirmation_password')
-        if password != password_confirmation:
+        confirmation_password = kwargs.get('confirmation_password')
+        if password != confirmation_password:
             raise ValidationError("Password have to be equals to confirmation passoword")
         password = cls.hash_password(password)
         document = {
