@@ -41,7 +41,7 @@ class AuthRegister(Resource):
             User.create(
                 email=email,
                 password=password,
-                password_conf=password_conf,
+                confirmation_password=confirmation_password,
                 firstname=firstname,
                 lastname=lastname
             )
